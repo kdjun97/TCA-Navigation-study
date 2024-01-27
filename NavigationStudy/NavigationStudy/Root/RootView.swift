@@ -6,19 +6,39 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct RootView: View {
+    let store: StoreOf<RootFeature>
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStackStore(store.scope(state: \.path, action: \.path)) {
+            RootContentView(store: store)
+        } destination: { store in
+            switch store {
+            case .main:
+                CaseLet(/RootFeature.Path.State.main, action: RootFeature.Path.Action.main) { store in
+                    MainView(store: store)
+                }
+            }
         }
-        .padding()
     }
 }
 
-#Preview {
-    RootView()
+private struct RootContentView: View {
+    let store: StoreOf<RootFeature>
+    
+    fileprivate init(store: StoreOf<RootFeature>) {
+        self.store = store
+    }
+    
+    fileprivate var body: some View {
+        Text("This is Splash View")
+        NavigationLink(state: RootFeature.Path.State.main(MainFeature.State())) {
+            Text("Navigate To Main")
+                .foregroundStyle(.white)
+                .padding()
+                .background(.black)
+        }
+    }
 }

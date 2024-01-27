@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct NavigationStudyApp: App {
     var body: some Scene {
         WindowGroup {
-            RootView()
+            RootView(
+                store: Store(initialState: RootFeature.State(), reducer: { RootFeature()._printChanges() })
+            )
         }
     }
 }
