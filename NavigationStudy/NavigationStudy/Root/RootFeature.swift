@@ -20,7 +20,13 @@ struct RootFeature {
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .path(.element(id: _, action: RootFeature.Path.Action.main(.navigateToDetailButtonTapped))):
+                state.path.append(.detail(DetailFeature.State()))
+                return .none
+            default:
+                return .none
+            }
         }
         .forEach(\.path, action: \.path) {
             Path()
@@ -33,15 +39,20 @@ extension RootFeature {
     struct Path {
         enum State {
             case main(MainFeature.State)
+            case detail(DetailFeature.State)
         }
 
         enum Action {
             case main(MainFeature.Action)
+            case detail(DetailFeature.Action)
         }
         
         var body: some ReducerOf<Self> {
             Scope(state: /State.main, action: /Action.main) {
                 MainFeature()._printChanges()
+            }
+            Scope(state: /State.detail, action: /Action.detail) {
+                DetailFeature()._printChanges()
             }
         }
     }

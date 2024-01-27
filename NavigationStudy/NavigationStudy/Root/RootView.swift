@@ -20,6 +20,10 @@ struct RootView: View {
                 CaseLet(/RootFeature.Path.State.main, action: RootFeature.Path.Action.main) { store in
                     MainView(store: store)
                 }
+            case .detail:
+                CaseLet(/RootFeature.Path.State.detail, action: RootFeature.Path.Action.detail) { store in
+                    DetailView(store: store)
+                }
             }
         }
     }
@@ -34,6 +38,7 @@ private struct RootContentView: View {
     
     fileprivate var body: some View {
         Text("This is Splash View")
+        // NavigationLink로 이동하는 방식
         NavigationLink(state: RootFeature.Path.State.main(MainFeature.State())) {
             Text("Navigate To Main")
                 .foregroundStyle(.white)
