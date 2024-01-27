@@ -19,6 +19,27 @@ struct DetailView: View {
     }
     
     var body: some View {
-        Text("Detail View")
+        DetailContentView(store: store)
+    }
+}
+
+private struct DetailContentView: View {
+    let store: StoreOf<DetailFeature>
+    @ObservedObject private var viewStore: ViewStoreOf<DetailFeature>
+    
+    init(store: StoreOf<DetailFeature>) {
+        self.store = store
+        self.viewStore = ViewStore(store, observe: { $0 })
+    }
+    
+    fileprivate var body: some View {
+        VStack {
+            Text("Detail View")
+            Button {
+                viewStore.send(.alertButtonTapped)
+            } label: {
+                Text("Alert Show!")
+            }
+        }.alert(store: store.scope(state: \.$alert, action: \.alert))
     }
 }

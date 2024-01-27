@@ -24,6 +24,9 @@ struct RootFeature {
             case .path(.element(id: _, action: RootFeature.Path.Action.main(.navigateToDetailButtonTapped))):
                 state.path.append(.detail(DetailFeature.State()))
                 return .none
+            case .path(.element(id: _, action: RootFeature.Path.Action.detail(.alert(.presented(.success))))):
+                _ = state.path.popLast()
+                return .none
             default:
                 return .none
             }
