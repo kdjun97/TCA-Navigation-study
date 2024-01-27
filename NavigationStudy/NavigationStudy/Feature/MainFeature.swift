@@ -11,11 +11,14 @@ import ComposableArchitecture
 @Reducer
 struct MainFeature {
     struct State: Equatable {
-        
+        var isSheetPresented: Bool = false
     }
     
     enum Action {
         case navigateToDetailButtonTapped
+        case showSheetButtonTapped
+        case setSheetPresented(Bool)
+        case bottomSheetSendButtonTapped
     }
     
     var body: some ReducerOf<Self> {
@@ -23,8 +26,15 @@ struct MainFeature {
             switch action {
             case .navigateToDetailButtonTapped:
                 return .none
+            case .showSheetButtonTapped:
+                state.isSheetPresented = true
+                return .none
+            case .setSheetPresented(let value):
+                state.isSheetPresented = value
+                return .none
+            case .bottomSheetSendButtonTapped:
+                return .none
             }
         }
-        
     }
 }
